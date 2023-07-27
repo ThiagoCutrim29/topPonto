@@ -1,0 +1,28 @@
+name: Registrar o ponto
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '50 7 * * 1,2,3,4,5'
+    - cron: '57 11 * * 1,2,3,4,5'
+    - cron: '40 12 * * 1,2,3,4,5'
+    - cron: '57 17 * * 1,2,3,4'
+    - cron: '0 17 * * 5'
+
+jobs:
+  e2e-morning:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Install npm dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v5
+        with:
+          command: npx cypress run --env username=${{ secrets.USERNAME }},password=${{ secrets.PASSWORD }}
+
+
